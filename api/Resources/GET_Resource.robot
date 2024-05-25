@@ -27,5 +27,5 @@ Então a requisição deve ocorrer com sucesso
 # --- E ---
 E deve ser retornado a quantidade de registros corretamente
     [Arguments]    ${qtde_esperada}
-    ${qtde_retornada}   Get Length      ${RESPONSE.json()['data']}
-    Should Be Equal     ${qtde_esperada}    ${qtde_retornada}
+    #${qtde_retornada}   Get Length      ${RESPONSE.json()['data']}
+    Should Be Equal     ${RESPONSE.json()['data'][0]['email']}    ${qtde_esperada}
