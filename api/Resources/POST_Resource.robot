@@ -1,22 +1,25 @@
 *** Settings ***
 Documentation
 Library        RequestsLibrary
+Library        FakerLibrary     locale=pt_BR
 
 *** Variables ***
-${base_url}    https://serverest.dev/
-&{headers}=     Content-Type=application/json
+${BASE_URL}    https://serverest.dev/
+&{HEADERS}     Content-Type=application/json
 
 *** Keywords ***
 
 # --- DADO ---
 Dado que estou conectado na API
     [Arguments]       ${endpoint}
-    Create Session    alias=server_rest    url=${base_url}  headers=${headers}
+    Create Session    alias=server_rest    url=${BASE_URL}  headers=&{HEADERS}
     Session Exists     alias=server_rest
 
 # --- QUANDO ---
 Quando envio a requisição para adicionar usuário
-    ${RESPONSE}     POST On Session      alias=server_rest    url=/usuarios   data={"nome": "Fulano da Silva","email": "teste34@qa.com.br", "password": "teste","administrador": "true"}
+    ${NOME}        FakerLibrary.Name
+    ${EMAIL}       FakerLibrary.Email 
+    ${RESPONSE}     POST On Session      alias=server_rest    url=/usuarios   data={"nome": "${NOME}","email": "${EMAIL}", "password": "teste","administrador": "true"}
     Set Test Variable   ${RESPONSE}
 
 Quando envio a requisição para adicionar usuário já existente
